@@ -1,0 +1,25 @@
+test/unit/server.test.ts
+  ai_agent 36
+tsconfig.json
+  s_b00b2984d7b3c7::t_4a6eb19916d8f2 28
+test/helpers/mockLogger.ts
+  s_b00b2984d7b3c7::t_0e4db5c46fecdc 4-10,15,23
+test/unit/routes/health.test.ts
+  ai_agent 27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "24fc6139eeed6f0c8c32cb544ef1cfba70f1a063",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
