@@ -43,8 +43,8 @@
         "lint": "biome check .",
         "lint:fix": "biome check --fix .",
         "test": "bun test",
-        "db:generate": "bun drizzle-kit generate --config src/db/drizzle.config.ts",
-        "db:migrate": "bun drizzle-kit migrate --config src/db/drizzle.config.ts"
+        "db:generate": "drizzle-kit generate --config src/db/drizzle.config.ts",
+        "db:migrate": "drizzle-kit migrate --config src/db/drizzle.config.ts"
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.1048.0",
