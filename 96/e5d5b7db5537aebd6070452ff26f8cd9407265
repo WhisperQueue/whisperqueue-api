@@ -1,0 +1,16 @@
+.env.example
+  h_d2d80973a08152 1
+.gitignore
+  h_d2d80973a08152 145-147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "96e5d5b7db5537aebd6070452ff26f8cd9407265",
+  "prompts": {},
+  "humans": {
+    "h_d2d80973a08152": {
+      "author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
