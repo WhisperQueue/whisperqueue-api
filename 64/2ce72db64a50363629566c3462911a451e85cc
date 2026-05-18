@@ -1,0 +1,31 @@
+lefthook.yml
+  s_8d2f5bfcece8b3::t_39110d492d1284 5-26
+tsconfig.json
+  s_8d2f5bfcece8b3::t_f57a9621f36a89 5
+.fallowrc.json
+  h_d2d80973a08152 5
+biome.json
+  s_8d2f5bfcece8b3::t_4f6c9ac7f305e8 10
+  s_8d2f5bfcece8b3::t_7b88421724909f 34-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "642ce72db64a50363629566c3462911a451e85cc",
+  "prompts": {},
+  "humans": {
+    "h_d2d80973a08152": {
+      "author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_8d2f5bfcece8b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "250911a7-c61c-43af-84e2-9d5d2a97dc37",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
