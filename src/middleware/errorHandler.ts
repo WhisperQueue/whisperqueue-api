@@ -27,7 +27,5 @@ export const createErrorHandler =
     (logger: Logger): ErrorHandler =>
     (err, c) => {
         if (err instanceof HTTPException) return handleHttpException(logger, err, c);
-        const httpError = toHttpException(err);
-        logger.error(err, 'Unhandled server error');
-        return c.json({ status: httpError.status, error: 'Internal server error' }, httpError.status);
+        return handleHttpException(logger, toHttpException(err), c);
     };

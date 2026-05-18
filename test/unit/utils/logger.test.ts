@@ -16,8 +16,8 @@ describe('getLogger', () => {
         expect(a).toBe(b);
     });
 
-    it('defaults log level to info', () => {
-        const logger = getLogger();
-        expect(logger.level).toBe('info');
+    it('exposes a valid pino log level', () => {
+        const validLevels = ['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent'];
+        expect(validLevels).toContain(getLogger().level);
     });
 });

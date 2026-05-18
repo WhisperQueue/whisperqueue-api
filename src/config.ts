@@ -4,7 +4,7 @@ import { envBooleanDefault } from '@/utils/envCoercions';
 
 const AppConfigSchema = z
     .object({
-        API_KEY: z.string(),
+        API_KEY: z.string().min(1),
         DATABASE_PATH: z.string(),
         HOSTNAME: z.string().default('127.0.0.1'),
         PORT: z.coerce.number().int().default(5001),

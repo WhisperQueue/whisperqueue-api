@@ -97,6 +97,18 @@ describe('createErrorHandler', () => {
             await assertInternalServerError(await app.request('/test'));
         });
 
+        it('preserves guessed 4xx status and message for error with status property', async () => {
+            const app = makeApp(logger);
+            app.get('/test', () => {
+                const err = Object.assign(new Error('Bad input'), { status: 400 });
+                throw err;
+            });
+            const res = await app.request('/test');
+            expect(res.status).toBe(400);
+            const body = (await res.json()) as Record<string, unknown>;
+            expect(body.error).toBe('Bad input');
+        });
+
         it('logs unknown errors', async () => {
             const app = makeApp(logger);
             app.get('/test', () => {

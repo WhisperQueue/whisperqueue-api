@@ -10,17 +10,15 @@ export type MockLogger = Logger & {
     trace: ReturnType<typeof mock>;
 };
 
-export const createMockLogger = (): MockLogger => {
-    const noop = mock(() => {});
-    return {
-        info: noop,
-        error: noop,
-        warn: noop,
-        debug: noop,
-        fatal: noop,
-        trace: noop,
-        silent: noop,
+export const createMockLogger = (): MockLogger =>
+    ({
+        info: mock(() => {}),
+        error: mock(() => {}),
+        warn: mock(() => {}),
+        debug: mock(() => {}),
+        fatal: mock(() => {}),
+        trace: mock(() => {}),
+        silent: mock(() => {}),
         child: mock(() => createMockLogger()),
         level: 'silent',
-    } as unknown as MockLogger;
-};
+    }) as unknown as MockLogger;
