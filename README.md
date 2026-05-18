@@ -112,6 +112,8 @@ bun install
 bun dev          # start with hot reload
 bun test         # run tests
 bun check        # type check + code analysis
+bun db:generate  # generate a new migration from schema changes
+bun db:migrate   # apply pending migrations
 ```
 
 Git hooks are installed automatically via `lefthook` on `bun install`. They run Biome (lint + format) on staged files and `tsc` on each commit.

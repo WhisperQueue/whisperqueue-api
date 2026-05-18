@@ -54,3 +54,34 @@ src/
 - faster-whisper streams segments — collect all before marking job complete
 - SQLite file: `/app/data/whisperqueue.db` (Docker volume)
 - Model weights: `/app/models` (Docker volume)
+
+## ID Format
+
+UUIDs with type prefixes. Generate with `crypto.randomUUID()`, prepend prefix:
+
+```ts
+const jobId = `job_${crypto.randomUUID()}`;
+const transcriptId = `tr_${crypto.randomUUID()}`;
+```
+
+The `job_abc123` / `tr_xyz789` values in the API docs are illustrative only.
+
+## Progress Calculation
+
+`"progress"` on `GET /status` = percentage of audio duration processed.
+
+```ts
+progress = Math.round((latestSegmentEnd / totalDuration) * 100)
+```
+
+Get `totalDuration` before transcription starts (ffprobe or faster-whisper's info output). Update `progress` in the job record as each segment streams in from faster-whisper stdout.
+
+## HTTPS Cache Fallback
+
+When no `ETag` or `Content-MD5` header is present on an HTTPS URL:
+1. Download file to temp path, hashing bytes in memory as they stream
+2. Check SQLite for existing transcript with that hash
+3. Cache hit → delete temp file, return cached `transcript_id`
+4. Cache miss → proceed with transcription using the already-downloaded temp file
+
+Never download twice.

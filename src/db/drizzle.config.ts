@@ -1,0 +1,12 @@
+// drizzle.config.ts
+import { defineConfig } from 'drizzle-kit';
+
+export default defineConfig({
+    dialect: 'sqlite',
+    schema: './src/db/schema.ts',
+    out: './src/db/migrations',
+    verbose: true,
+    dbCredentials: {
+        url: process.env.DATABASE_PATH ?? './nodb.db',
+    },
+});
