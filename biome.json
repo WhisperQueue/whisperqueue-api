@@ -32,7 +32,6 @@
             "semicolons": "always"
         },
         "parser": {}
-
     },
     "json": {
         "parser": {
