@@ -144,4 +144,5 @@ vite.config.ts.timestamp-*
 .fallow/
 data/*
 !data/.gitkeep
+.claude/settings.local.json
 
