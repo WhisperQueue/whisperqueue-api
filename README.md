@@ -44,25 +44,46 @@ Copy `.env.example` to `.env`. All env vars are parsed and validated at startup 
 | `CORS_ORIGINS` | | `*` | Comma-separated list of allowed CORS origins |
 | `SECURE_HEADERS` | | `true` | Enable security response headers (CSP, etc.) |
 | `LOGGER_LEVEL` | | `info` | Pino log level: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
-| `LOGGER_PRETTY_PRINT` | | `true` | Colorised human-readable logs. Set `false` in production for JSON output |
+| `LOGGER_PRETTY_PRINT` | | `false` | Colorised human-readable logs. Set `true` for local dev |
+| `WHISPER_MODEL` | | `large-v3` | faster-whisper model: `tiny`, `base`, `small`, `medium`, `large-v3` |
+| `WHISPER_DEVICE` | | `cuda` | Inference device: `cuda` or `cpu` |
+| `BEAM_SIZE` | | `5` | Beam search width — higher is more accurate but slower |
+| `MAX_FILE_SIZE_MB` | | `500` | Maximum audio file size accepted for download |
+| `DOWNLOAD_TIMEOUT_SECONDS` | | `120` | Timeout for downloading audio files |
+| `S3_ENDPOINT_URL` | | — | S3-compatible endpoint (e.g. `http://minio:9000`). Leave blank for AWS |
+| `AWS_ACCESS_KEY_ID` | | — | S3 credentials |
+| `AWS_SECRET_ACCESS_KEY` | | — | S3 credentials |
+| `AWS_REGION` | | `us-east-1` | S3 region |
 
 ### How env vars map to `appConfig`
 
 Env vars are transformed into a structured object at startup:
 
 ```ts
-appConfig.http.hostname      // HOSTNAME
-appConfig.http.port          // PORT          (coerced to number)
-appConfig.http.apiKey        // API_KEY
+appConfig.http.hostname        // HOSTNAME
+appConfig.http.port            // PORT                   (coerced to number)
+appConfig.http.apiKey          // API_KEY
 
-appConfig.cors.origins       // CORS_ORIGINS  (split on "," → string[])
+appConfig.cors.origins         // CORS_ORIGINS           (split on "," → string[])
 
-appConfig.security.headers   // SECURE_HEADERS (coerced to boolean)
+appConfig.security.headers     // SECURE_HEADERS         (coerced to boolean)
 
-appConfig.database.path      // DATABASE_PATH
+appConfig.database.path        // DATABASE_PATH
 
-appConfig.logger.level       // LOGGER_LEVEL
-appConfig.logger.pretty      // LOGGER_PRETTY_PRINT (coerced to boolean)
+appConfig.logger.level         // LOGGER_LEVEL
+appConfig.logger.pretty        // LOGGER_PRETTY_PRINT    (coerced to boolean)
+
+appConfig.whisper.model        // WHISPER_MODEL
+appConfig.whisper.device       // WHISPER_DEVICE
+appConfig.whisper.beamSize     // BEAM_SIZE              (coerced to number)
+
+appConfig.download.maxFileSizeMb     // MAX_FILE_SIZE_MB        (coerced to number)
+appConfig.download.timeoutSeconds    // DOWNLOAD_TIMEOUT_SECONDS (coerced to number)
+
+appConfig.s3.endpointUrl       // S3_ENDPOINT_URL        (optional)
+appConfig.s3.accessKeyId       // AWS_ACCESS_KEY_ID      (optional)
+appConfig.s3.secretAccessKey   // AWS_SECRET_ACCESS_KEY  (optional)
+appConfig.s3.region            // AWS_REGION
 ```
 
 Boolean coercion accepts: `true`, `1`, `yes` → `true` · `false`, `0`, `no`, `""` → `false`.
