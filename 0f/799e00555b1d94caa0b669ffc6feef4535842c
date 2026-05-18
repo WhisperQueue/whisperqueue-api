@@ -1,0 +1,21 @@
+test/unit/db.test.ts
+  s_b00b2984d7b3c7::t_f9d5d5554d9c16 1-4
+.fallowrc.json
+  s_b00b2984d7b3c7::t_169ed7c1b0e9b3 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "0f799e00555b1d94caa0b669ffc6feef4535842c",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
