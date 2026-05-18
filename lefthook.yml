@@ -1,0 +1,26 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "**/*.{ts,tsx,js,jsx,json}"
+      run: bunx biome check --fix --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+      skip:
+        - merge
+        - rebase
+    types:
+      run: bun run check:types
+      skip:
+        - merge
+        - rebase
+    tests:
+      glob: "**/*.test.ts"
+      run: bun test {staged_files}
+      skip:
+        - merge
+        - rebase
+
+commit-msg:
+  commands:
+    commitlint:
+      run: bunx commitlint --edit {1}
