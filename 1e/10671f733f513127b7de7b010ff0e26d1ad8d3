@@ -1,0 +1,41 @@
+test/unit/middleware/errorHandler.test.ts
+  s_b00b2984d7b3c7::t_5088dc610eab03 1-3,5,8-13,20-30,34-51,55-63,67-74,79-82,86-93,98-101,105-109
+  s_b00b2984d7b3c7::t_7318ccfe4bb5dd 14-19
+  s_b00b2984d7b3c7::t_bbdb2657e82a94 97
+  ai_agent 6,31-33,52-54,64-66,75-77,83-85,94-96,102-104
+  s_b00b2984d7b3c7::t_0192cb31289d2e 78
+test/unit/routes/health.test.ts
+  s_b00b2984d7b3c7::t_3622d66d16ed77 1-25,28-40
+  s_b00b2984d7b3c7::t_67e47eb86474f2 26-27
+test/unit/server.test.ts
+  s_b00b2984d7b3c7::t_3d0d8ccc309e82 17
+  s_b00b2984d7b3c7::t_f513a7ddd11df3 52,54
+  s_b00b2984d7b3c7::t_d74ed8a06c7d2c 55
+  ai_agent 3
+  s_b00b2984d7b3c7::t_bc875ef5f440c4 4
+  s_b00b2984d7b3c7::t_c524b26486c1bc 1-2,5-16,18-51,53,56-58
+src/server.ts
+  s_b00b2984d7b3c7::t_eabc404de1cecb 22
+  s_b00b2984d7b3c7::t_2a77c06f0449f9 9-17,25-26
+src/routes/health.ts
+  s_b00b2984d7b3c7::t_9d9166c2ab44ad 3
+  s_b00b2984d7b3c7::t_5a92cd2707b874 1-2,4-18
+test/helpers/mockLogger.ts
+  s_b00b2984d7b3c7::t_972624b179a0d2 1-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "1e10671f733f513127b7de7b010ff0e26d1ad8d3",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
