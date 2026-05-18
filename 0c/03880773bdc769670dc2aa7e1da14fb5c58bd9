@@ -1,0 +1,32 @@
+src/db/client.ts
+  h_d2d80973a08152 1-11
+package.json
+  h_d2d80973a08152 46-47,60-61
+src/db/drizzle.config.ts
+  h_d2d80973a08152 1-12
+.claude/settings.local.json
+  s_b00b2984d7b3c7::t_24f28b4c339711 1-5
+src/db/schema.ts
+  s_b00b2984d7b3c7::t_1ab4c656fde196 1-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "0c03880773bdc769670dc2aa7e1da14fb5c58bd9",
+  "prompts": {},
+  "humans": {
+    "h_d2d80973a08152": {
+      "author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
