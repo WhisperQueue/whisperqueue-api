@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
     "entry": ["src/index.{ts,tsx,js,jsx}", "src/main.{ts,tsx,js,jsx}", "test/**/*.test.{ts,tsx}"],
-    "ignoreDependencies": ["better-sqlite3", "hono", "bunqueue", "@aws-sdk/client-s3"],
+    "ignoreDependencies": ["better-sqlite3", "bunqueue", "@aws-sdk/client-s3"],
     "duplicates": {
         "minOccurrences": 2
     },

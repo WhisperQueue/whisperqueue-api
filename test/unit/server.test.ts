@@ -21,11 +21,11 @@ const deps: AppDeps = {
 let app: Hono;
 
 beforeAll(async () => {
-    const { createApp } = await import('@/server');
-    app = createApp(deps);
+    const { createHttpServer } = await import('@/server');
+    app = createHttpServer(deps);
 });
 
-describe('createApp', () => {
+describe('createHttpServer', () => {
     describe('GET /health', () => {
         it('returns 200 without auth', async () => {
             const res = await app.request('/health');

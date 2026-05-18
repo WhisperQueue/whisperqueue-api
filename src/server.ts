@@ -14,7 +14,7 @@ export type AppDeps = {
     health: HealthDeps;
 };
 
-export const createApp = ({ logger, health }: AppDeps): Hono => {
+export const createHttpServer = ({ logger, health }: AppDeps): Hono => {
     const app = new Hono();
 
     app.use('*', createCorsMiddleware(appConfig.cors.origins));
