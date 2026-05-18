@@ -24,7 +24,7 @@ describe('GET /health', () => {
         const app = new Hono();
         registerHealthRoute(app, { model: 'tiny', device: 'cpu', getQueueDepth: () => 0 });
         const res = await app.request('/health');
-        const body = await res.json();
+        const body = (await res.json()) as Record<string, unknown>;
         expect(body.model).toBe('tiny');
         expect(body.device).toBe('cpu');
     });

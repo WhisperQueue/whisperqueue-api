@@ -33,7 +33,7 @@ describe('createHttpServer', () => {
         });
 
         it('returns correct health shape', async () => {
-            const body = await app.request('/health').then((r) => r.json());
+            const body = (await (await app.request('/health')).json()) as Record<string, unknown>;
             expect(body.status).toBe('ok');
             expect(body.model).toBe('large-v3');
             expect(body.device).toBe('cuda');
