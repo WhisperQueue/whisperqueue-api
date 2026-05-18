@@ -1,0 +1,53 @@
+.fallowrc.json
+  s_b00b2984d7b3c7::t_fd90961439f8b1 5
+test/unit/utils/logger.test.ts
+  s_b00b2984d7b3c7::t_770e598f5900b0 1-3
+test/unit/utils/createConfig.test.ts
+  s_b00b2984d7b3c7::t_d45f9f44841114 1-3
+test/unit/middleware/auth.test.ts
+  s_b00b2984d7b3c7::t_043e5eebc6c5c8 1-3
+src/utils/logger.ts
+  s_b00b2984d7b3c7::t_2a428c238e01c1 9-12
+  s_b00b2984d7b3c7::t_d936e4abc76e2a 7-8
+test/unit/middleware/secureHeaders.test.ts
+  s_b00b2984d7b3c7::t_8426811b2a65a5 1-3
+test/unit/middleware/cors.test.ts
+  s_b00b2984d7b3c7::t_6b4b96f5f06736 1-3
+src/server.ts
+  h_d2d80973a08152 1-21
+test/unit/middleware/notFound.test.ts
+  s_b00b2984d7b3c7::t_f653566ce43014 1-3
+package.json
+  s_b00b2984d7b3c7::t_9d07c38b777654 55-56
+src/config.ts
+  s_b00b2984d7b3c7::t_cd84500f0b4f92 14
+src/middleware/auth.ts
+  h_d2d80973a08152 1-3
+src/middleware/errorHandler.ts
+  s_b00b2984d7b3c7::t_33c96c8a660e8e 20-29
+test/unit/middleware/errorHandler.test.ts
+  s_b00b2984d7b3c7::t_e578611a478d6a 1-3
+test/unit/utils/envCoercions.test.ts
+  s_b00b2984d7b3c7::t_5784fc30e6213a 1-3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "04c623f814ba4028f34174937265979cb7faa402",
+  "prompts": {},
+  "humans": {
+    "h_d2d80973a08152": {
+      "author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
