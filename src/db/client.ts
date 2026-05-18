@@ -5,6 +5,7 @@ import * as schema from './schema';
 type AppSchema = typeof schema;
 const dbPath = Bun.env.DATABASE_PATH ?? './sample.db';
 const client = new Database(dbPath);
+client.run('PRAGMA journal_mode = WAL;');
 export const db: BunSQLiteDatabase<AppSchema> = drizzle({
     client,
     schema,
