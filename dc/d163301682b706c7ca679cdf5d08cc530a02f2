@@ -1,0 +1,21 @@
+CLAUDE.md
+  s_8d2f5bfcece8b3::t_1179e0e97293ca 1-68
+README.md
+  s_8d2f5bfcece8b3::t_41af6c3d749d2f 2-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.8",
+  "base_commit_sha": "dcd163301682b706c7ca679cdf5d08cc530a02f2",
+  "prompts": {},
+  "sessions": {
+    "s_8d2f5bfcece8b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "250911a7-c61c-43af-84e2-9d5d2a97dc37",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
