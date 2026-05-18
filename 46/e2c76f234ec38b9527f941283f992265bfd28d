@@ -1,0 +1,25 @@
+.env.example
+  s_b00b2984d7b3c7::t_9574c08d66a746 17-32
+src/config.ts
+  s_b00b2984d7b3c7::t_084542a7ae5b97 7,9-10,13-14,16-17,19-23,25-40,45-46,51-97
+README.md
+  s_b00b2984d7b3c7::t_5e06728268f572 47-56,63-65,67,69,71,73-86
+src/index.ts
+  s_b00b2984d7b3c7::t_b4ef4039515527 11-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "46e2c76f234ec38b9527f941283f992265bfd28d",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
