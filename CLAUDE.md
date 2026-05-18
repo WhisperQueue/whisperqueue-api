@@ -1,17 +1,13 @@
 # whisperqueue-api — AI Assistant Context
 
-## Runtime & Tooling
-
-- Runtime: **Bun** — use `bun` everywhere, never `node`, `npm`, `npx`, `ts-node`
-- Use `bun test` for tests, not jest or vitest
-- Bun auto-loads `.env` — never import or configure `dotenv`
+See root `CLAUDE.md` for shared rules (commits, TypeScript, tooling).
 
 ## Framework Conventions
 
 - HTTP framework is **Hono** — never use `Bun.serve()` directly, never use express
 - ORM is **Drizzle** over `bun:sqlite` — never write raw SQL or use `bun:sqlite` directly
 - Job queue is **bunqueue** (SQLite-backed) — no Redis, no BullMQ, no external queue
-- No frontend — this is a pure API server, no HTML, no React, no Vite
+- No frontend — pure API server, no HTML, no React, no Vite
 
 ## Path Aliases
 
@@ -22,17 +18,9 @@ import { db } from '@/db/client';
 import { transcriptions } from '@/db/schema';
 ```
 
-## TypeScript Rules
+## Zod
 
-- **Never use `any`** — create proper types or use `unknown`
-- All Hono route handlers must have typed request/response
-- Zod v4: use `z.url()` not `z.string().url()`
-- Never use `private` in classes — use `protected`
-- Catch clauses that only rethrow are useless — remove them
-
-## Before Declaring Done
-
-Run `bun check` and fix **all** issues — zero errors, zero warnings required.
+Use Zod v4: `z.url()` not `z.string().url()`
 
 ## Project Structure
 
