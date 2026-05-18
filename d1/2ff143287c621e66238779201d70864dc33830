@@ -1,0 +1,33 @@
+test/unit/services/transcriber.test.ts
+  s_b00b2984d7b3c7::t_23a5a5823c0f55 3-4
+  s_b00b2984d7b3c7::t_2840bb02f53c55 1,5,47-118
+  s_b00b2984d7b3c7::t_4954f8f19a1b1d 44-46
+  s_b00b2984d7b3c7::t_48b27d0c5be63c 6-43
+test/unit/services/downloader.test.ts
+  s_b00b2984d7b3c7::t_c08d2191937d9a 96,98-103,112-113
+  s_b00b2984d7b3c7::t_b4d7f00eb11aa8 104
+  s_b00b2984d7b3c7::t_b21656aa914fec 2-5,7-71,73-81,83-95,97,105-107,110-111,114-116
+  s_b00b2984d7b3c7::t_d1ef6ba5ed726c 1,6
+  s_b00b2984d7b3c7::t_1c3a2e857b1145 72,82
+test/helpers/mockConfig.ts
+  s_b00b2984d7b3c7::t_efdfd159400853 1-17
+test/unit/services/transcriptCache.test.ts
+  s_b00b2984d7b3c7::t_07767a77bbe797 16
+  s_b00b2984d7b3c7::t_24712c214f94a8 21-106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "d12ff143287c621e66238779201d70864dc33830",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
