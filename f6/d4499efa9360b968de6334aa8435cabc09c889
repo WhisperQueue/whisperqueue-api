@@ -1,0 +1,32 @@
+src/services/transcriptCache.ts
+  s_b00b2984d7b3c7::t_a4f0ec046dad37 1-58
+src/services/downloader.ts
+  s_b00b2984d7b3c7::t_891f5962a5a20a 6,27-28,33,76-77,80
+  s_b00b2984d7b3c7::t_3395735dafb30a 7
+  s_b00b2984d7b3c7::t_7e58c88362c0e6 57
+  s_b00b2984d7b3c7::t_6c2f4ee78cc440 1-5,8-22,25,29-32,34-56,58-75,78-79,81-93
+  s_b00b2984d7b3c7::t_b2326186fef544 23-24,26
+  s_b00b2984d7b3c7::t_af8027f4b07d86 94-99
+src/services/transcriber.ts
+  s_b00b2984d7b3c7::t_b858c03e6f6a00 1-28,34-39,48-56,58,62-71,79-87,89-95,99,113,115-118,121-132
+  s_b00b2984d7b3c7::t_66c6a9149ed586 29,33,40-47,57,88,96-98,100-112,114,119-120
+  s_b00b2984d7b3c7::t_6a6be09df14ba0 30-32
+  s_b00b2984d7b3c7::t_b2faf3f9bee470 133-138
+  s_b00b2984d7b3c7::t_f5131f9a0d923d 59-61,72-78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "f6d4499efa9360b968de6334aa8435cabc09c889",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
