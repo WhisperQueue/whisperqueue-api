@@ -1,0 +1,22 @@
+README.md
+  s_b00b2984d7b3c7::t_1f68379c6f66ed 32
+  s_b00b2984d7b3c7::t_24a712a898976f 36-68
+.env.example
+  s_b00b2984d7b3c7::t_8d95496d5e72ed 1-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "5a91a8cdd9cce35793b4a682dc45cfb134b36772",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
