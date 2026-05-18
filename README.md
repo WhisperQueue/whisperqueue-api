@@ -29,24 +29,43 @@ cp .env.example .env
 docker compose up -d
 ```
 
-The service starts on port `3000` (configurable via `.env`).
+The service starts on port `5001` by default (configurable via `PORT` in `.env`).
 
 ## Configuration
 
-Copy `.env.example` to `.env` and set the following:
+Copy `.env.example` to `.env`. All env vars are parsed and validated at startup via Zod — the process exits immediately with a clear error if a required var is missing.
 
-| Variable | Default | Description |
-|---|---|---|
-| `PORT` | `3000` | HTTP server port |
-| `API_KEY` | — | Bearer token for auth. Generate: `openssl rand -hex 32` |
-| `WHISPER_MODEL` | `large-v3` | Model size: `tiny`, `base`, `small`, `medium`, `large-v3` |
-| `BEAM_SIZE` | `5` | Beam search width (higher = more accurate, slower) |
-| `MAX_FILE_SIZE_MB` | `500` | Max audio file size |
-| `DOWNLOAD_TIMEOUT_SECONDS` | `120` | Timeout for downloading audio files |
-| `S3_ENDPOINT_URL` | — | S3-compatible endpoint (e.g. `http://minio:9000`). Leave blank for AWS |
-| `AWS_ACCESS_KEY_ID` | — | S3 credentials |
-| `AWS_SECRET_ACCESS_KEY` | — | S3 credentials |
-| `AWS_REGION` | `us-east-1` | S3 region |
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `API_KEY` | ✓ | — | Bearer token for all authenticated endpoints. Generate: `openssl rand -hex 32` |
+| `DATABASE_PATH` | ✓ | — | Path to the SQLite database file. Docker: `/app/data/whisperqueue.db` |
+| `HOSTNAME` | | `127.0.0.1` | Interface the HTTP server binds to |
+| `PORT` | | `5001` | HTTP server port |
+| `CORS_ORIGINS` | | `*` | Comma-separated list of allowed CORS origins |
+| `SECURE_HEADERS` | | `true` | Enable security response headers (CSP, etc.) |
+| `LOGGER_LEVEL` | | `info` | Pino log level: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
+| `LOGGER_PRETTY_PRINT` | | `true` | Colorised human-readable logs. Set `false` in production for JSON output |
+
+### How env vars map to `appConfig`
+
+Env vars are transformed into a structured object at startup:
+
+```ts
+appConfig.http.hostname      // HOSTNAME
+appConfig.http.port          // PORT          (coerced to number)
+appConfig.http.apiKey        // API_KEY
+
+appConfig.cors.origins       // CORS_ORIGINS  (split on "," → string[])
+
+appConfig.security.headers   // SECURE_HEADERS (coerced to boolean)
+
+appConfig.database.path      // DATABASE_PATH
+
+appConfig.logger.level       // LOGGER_LEVEL
+appConfig.logger.pretty      // LOGGER_PRETTY_PRINT (coerced to boolean)
+```
+
+Boolean coercion accepts: `true`, `1`, `yes` → `true` · `false`, `0`, `no`, `""` → `false`.
 
 ## API
 
