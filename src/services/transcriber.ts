@@ -144,6 +144,8 @@ export class TranscriberService {
             filePath,
             '--model',
             appConfig.whisper.model,
+            '--model_dir',
+            '/app/models',
             '--device',
             appConfig.whisper.device,
             '--beam_size',
