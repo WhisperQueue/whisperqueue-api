@@ -91,6 +91,7 @@ export class TranscriberService {
             buffer = lines.pop() ?? '';
             yield* lines;
         }
+        buffer += decoder.decode();
         if (buffer) yield buffer;
     }
 
