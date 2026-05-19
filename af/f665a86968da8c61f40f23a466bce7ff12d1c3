@@ -1,0 +1,25 @@
+.claude/scheduled_tasks.lock
+  ai_agent 1
+src/services/transcriber.ts
+  s_b00b2984d7b3c7::t_28194ef4911b97 121
+  ai_agent 48
+  s_b00b2984d7b3c7::t_3b870f9e93c0b2 49-51
+  s_b00b2984d7b3c7::t_0c8e74469ea980 153
+  s_b00b2984d7b3c7::t_0cd8ad63343e1b 103-106,118
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "aff665a86968da8c61f40f23a466bce7ff12d1c3",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
