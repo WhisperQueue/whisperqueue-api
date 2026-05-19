@@ -45,6 +45,10 @@ function findDuration(streams: Array<{ duration?: string }>): number {
     return 0;
 }
 
+function parseDuration(json: { streams: Array<{ duration?: string }>; format?: { duration?: string } }): number {
+    return findDuration(json.streams) || findDuration([json.format ?? {}]);
+}
+
 export class TranscriberService {
     async transcribe(
         filePath: string,
@@ -96,10 +100,10 @@ export class TranscriberService {
     }
 
     async getAudioDuration(filePath: string): Promise<number> {
-        const proc = Bun.spawn(['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', filePath], {
-            stdout: 'pipe',
-            stderr: 'pipe',
-        });
+        const proc = Bun.spawn(
+            ['ffprobe', '-v', 'quiet', '-print_format', 'json', '-show_streams', '-show_format', filePath],
+            { stdout: 'pipe', stderr: 'ignore' }
+        );
 
         const chunks: Uint8Array[] = [];
         for await (const chunk of proc.stdout as ReadableStream<Uint8Array>) {
@@ -111,9 +115,10 @@ export class TranscriberService {
 
         const json = JSON.parse(Buffer.concat(chunks).toString()) as {
             streams: Array<{ duration?: string }>;
+            format?: { duration?: string };
         };
 
-        return findDuration(json.streams);
+        return parseDuration(json);
     }
 
     protected processLine(
@@ -145,7 +150,7 @@ export class TranscriberService {
             String(appConfig.whisper.beamSize),
         ];
         if (language) args.push('--language', language);
-        return Bun.spawn(args, { stdout: 'pipe', stderr: 'pipe' });
+        return Bun.spawn(args, { stdout: 'pipe', stderr: 'ignore' });
     }
 }
 
