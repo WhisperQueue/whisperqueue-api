@@ -8,8 +8,8 @@ const startServer = () => {
     const app = createHttpServer({
         logger,
         health: {
-            model: 'large-v3',
-            device: 'cuda',
+            model: appConfig.whisper.model,
+            device: appConfig.whisper.device,
             getQueueDepth: () => 0,
         },
     });
