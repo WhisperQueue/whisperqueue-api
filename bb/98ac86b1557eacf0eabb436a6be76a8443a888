@@ -1,0 +1,9 @@
+src/services/transcriber.ts
+  ai_agent 147-148
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "bb98ac86b1557eacf0eabb436a6be76a8443a888",
+  "prompts": {}
+}
