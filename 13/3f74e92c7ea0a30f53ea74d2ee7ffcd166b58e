@@ -1,0 +1,31 @@
+src/services/transcriptCache.ts
+  s_b00b2984d7b3c7::t_09f69a7f4821b4 46,52-54
+  s_b00b2984d7b3c7::t_5d0237bb6f6102 18-27,45
+src/config.ts
+  ai_agent 37-48
+  s_b00b2984d7b3c7::t_2bef96ddf31c47 30,33-34
+src/services/downloader.ts
+  ai_agent 15
+  s_b00b2984d7b3c7::t_90d342874379fb 16-18,26-33,44-45
+  s_b00b2984d7b3c7::t_aa7f6ec030635b 78
+src/services/transcriber.ts
+  s_b00b2984d7b3c7::t_fd0a2322bddc04 56-71,73,77,82
+  ai_agent 16
+  s_b00b2984d7b3c7::t_9b902f8b0aeba7 80-81,87,89-92,94,107-109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.9",
+  "base_commit_sha": "133f74e92c7ea0a30f53ea74d2ee7ffcd166b58e",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
