@@ -12,11 +12,23 @@ export type DownloadResult = {
     sizeBytes: number;
 };
 
+const PRIVATE_IP_RE = /^(10\.|172\.(1[6-9]|2\d|3[01])\.|192\.168\.|169\.254\.|127\.|0\.|::1$|\[::1\]$)/;
+
+const BLOCKED_HOSTS = new Set(['localhost', 'metadata.google.internal']);
+
 export class DownloaderService {
     async download(url: string): Promise<DownloadResult> {
         if (url.startsWith('s3://')) return this.downloadS3(url);
         if (url.startsWith('http://') || url.startsWith('https://')) return this.downloadHttps(url);
         throw new Error(`Unsupported URL scheme: ${url}`);
+    }
+
+    protected validateUrl(url: string): void {
+        const parsed = new URL(url);
+        const host = parsed.hostname.toLowerCase();
+        if (BLOCKED_HOSTS.has(host) || PRIVATE_IP_RE.test(host)) {
+            throw new Error(`Blocked URL — private or reserved address: ${url}`);
+        }
     }
 
     protected async downloadS3(url: string): Promise<DownloadResult> {
@@ -29,6 +41,8 @@ export class DownloaderService {
     }
 
     protected async downloadHttps(url: string): Promise<DownloadResult> {
+        this.validateUrl(url);
+
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), appConfig.download.timeoutSeconds * 1000);
 
@@ -61,7 +75,7 @@ export class DownloaderService {
             }
             await writer.end();
         } catch (err) {
-            await writer.end();
+            await Promise.resolve(writer.end()).catch(() => {});
             await unlink(tempPath).catch(() => {});
             throw err;
         }

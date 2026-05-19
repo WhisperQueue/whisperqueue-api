@@ -13,7 +13,7 @@ export type TranscriptionResult = {
     segments: Segment[];
 };
 
-const SEGMENT_RE = /^\[(\d{2}:\d{2}[.:]\d{3}) --> (\d{2}:\d{2}[.:]\d{3})\]\s+(.*)/;
+const SEGMENT_RE = /^\[(\d{2}(?::\d{2}){1,2}[.:]\d{3}) --> (\d{2}(?::\d{2}){1,2}[.:]\d{3})]\s+(.*)/;
 const LANGUAGE_RE = /Detected language '(\w+)'/;
 
 export function parseTimestamp(ts: string): number {
@@ -53,29 +53,45 @@ export class TranscriberService {
     ): Promise<TranscriptionResult> {
         const totalDuration = await this.getAudioDuration(filePath);
         const segments: Segment[] = [];
-        let detectedLanguage = language ?? 'en';
-        const proc = this.spawnWhisper(filePath, language);
-
-        for await (const line of this.readLines(proc)) {
-            const lang = this.processLine(line, segments, totalDuration, onProgress);
-            if (lang) detectedLanguage = lang;
-        }
-
-        await proc.exited;
-
+        const detected = await this.runWhisper(filePath, language, segments, totalDuration, onProgress);
         return {
             text: segments.map((s) => s.text).join(' '),
-            language: detectedLanguage,
+            language: detected ?? language ?? 'en',
             duration: totalDuration,
             segments,
         };
     }
 
+    protected async runWhisper(
+        filePath: string,
+        language: string | undefined,
+        segments: Segment[],
+        totalDuration: number,
+        onProgress?: (progress: number) => void
+    ): Promise<string | undefined> {
+        const proc = this.spawnWhisper(filePath, language);
+        let detected: string | undefined;
+
+        for await (const line of this.readLines(proc)) {
+            const lang = this.processLine(line, segments, totalDuration, onProgress);
+            if (lang) detected = lang;
+        }
+
+        const exitCode = await proc.exited;
+        if (exitCode !== 0) throw new Error(`faster-whisper exited with code ${exitCode}`);
+        return detected;
+    }
+
     protected async *readLines(proc: ReturnType<typeof Bun.spawn>): AsyncIterable<string> {
         const decoder = new TextDecoder();
+        let buffer = '';
         for await (const chunk of proc.stdout as ReadableStream<Uint8Array>) {
-            yield* decoder.decode(chunk).split('\n');
+            buffer += decoder.decode(chunk, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() ?? '';
+            yield* lines;
         }
+        if (buffer) yield buffer;
     }
 
     async getAudioDuration(filePath: string): Promise<number> {
@@ -88,7 +104,9 @@ export class TranscriberService {
         for await (const chunk of proc.stdout as ReadableStream<Uint8Array>) {
             chunks.push(chunk);
         }
-        await proc.exited;
+
+        const exitCode = await proc.exited;
+        if (exitCode !== 0) throw new Error(`ffprobe exited with code ${exitCode}`);
 
         const json = JSON.parse(Buffer.concat(chunks).toString()) as {
             streams: Array<{ duration?: string }>;

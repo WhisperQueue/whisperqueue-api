@@ -27,16 +27,25 @@ const AppConfigSchema = z
         // Whisper
         WHISPER_MODEL: z.string().default('large-v3'),
         WHISPER_DEVICE: z.string().default('cuda'),
-        BEAM_SIZE: z.coerce.number().int().default(5),
+        BEAM_SIZE: z.coerce.number().int().min(1).default(5),
 
         // Download
-        MAX_FILE_SIZE_MB: z.coerce.number().int().default(500),
-        DOWNLOAD_TIMEOUT_SECONDS: z.coerce.number().int().default(120),
+        MAX_FILE_SIZE_MB: z.coerce.number().int().min(1).default(500),
+        DOWNLOAD_TIMEOUT_SECONDS: z.coerce.number().int().min(1).default(120),
 
         // S3 / MinIO
-        S3_ENDPOINT_URL: z.string().optional(),
-        AWS_ACCESS_KEY_ID: z.string().optional(),
-        AWS_SECRET_ACCESS_KEY: z.string().optional(),
+        S3_ENDPOINT_URL: z
+            .string()
+            .optional()
+            .transform((v) => v || undefined),
+        AWS_ACCESS_KEY_ID: z
+            .string()
+            .optional()
+            .transform((v) => v || undefined),
+        AWS_SECRET_ACCESS_KEY: z
+            .string()
+            .optional()
+            .transform((v) => v || undefined),
         AWS_REGION: z.string().default('us-east-1'),
     })
     .transform(

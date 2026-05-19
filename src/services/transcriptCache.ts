@@ -15,12 +15,16 @@ export class TranscriptCacheService {
     }
 
     async lookupByHash(fileHash: string): Promise<string | null> {
-        const rows = await db
-            .select({ id: transcriptions.id })
-            .from(transcriptions)
-            .where(eq(transcriptions.file_hash, fileHash))
-            .limit(1);
-        return rows[0]?.id ?? null;
+        try {
+            const rows = await db
+                .select({ id: transcriptions.id })
+                .from(transcriptions)
+                .where(eq(transcriptions.file_hash, fileHash))
+                .limit(1);
+            return rows[0]?.id ?? null;
+        } catch {
+            return null;
+        }
     }
 
     protected async getS3Etag(url: string): Promise<string | null> {
@@ -38,11 +42,16 @@ export class TranscriptCacheService {
     protected async getHttpsEtag(url: string): Promise<string | null> {
         try {
             const res = await fetch(url, { method: 'HEAD' });
-            const etag = res.headers.get('etag') ?? res.headers.get('content-md5');
-            return etag ? stripEtagQuotes(etag) : null;
+            if (!res.ok) return null;
+            return this.readEtagHeader(res.headers);
         } catch {
             return null;
         }
+    }
+
+    protected readEtagHeader(headers: Headers): string | null {
+        const etag = headers.get('etag') ?? headers.get('content-md5');
+        return etag ? stripEtagQuotes(etag) : null;
     }
 
     protected buildS3Client(): Bun.S3Client {
