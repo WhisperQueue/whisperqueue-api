@@ -1,9 +1,27 @@
 import { appConfig } from '@/config';
 import { createHttpServer } from '@/server';
+import { checkWhisperBackend } from '@/utils/checkWhisperBackend';
 import { getLogger } from '@/utils/logger';
 
-const startServer = () => {
+const startServer = async () => {
     const logger = getLogger();
+
+    const backend = await checkWhisperBackend();
+
+    if (!backend.ok) {
+        logger.error(
+            {
+                cliAvailable: backend.cliAvailable,
+                cudaAvailable: backend.cudaAvailable,
+                modelPresent: backend.modelPresent,
+                modelPath: backend.modelPath,
+            },
+            'Whisper backend check failed — aborting startup'
+        );
+        process.exit(1);
+    }
+
+    logger.info({ model: backend.modelPath, device: appConfig.whisper.device }, 'Whisper backend ready');
 
     const app = createHttpServer({
         logger,
@@ -11,6 +29,7 @@ const startServer = () => {
             model: appConfig.whisper.model,
             device: appConfig.whisper.device,
             getQueueDepth: () => 0,
+            backend,
         },
     });
 
@@ -23,4 +42,4 @@ const startServer = () => {
     };
 };
 
-export default startServer();
+export default await startServer();
