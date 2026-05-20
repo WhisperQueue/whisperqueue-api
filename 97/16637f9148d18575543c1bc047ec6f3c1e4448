@@ -1,0 +1,22 @@
+test/unit/utils/checkWhisperBackend.test.ts
+  s_b00b2984d7b3c7::t_4683980be9f690 43-50
+  s_b00b2984d7b3c7::t_a4df47e3d4d78b 10,14
+src/utils/checkWhisperBackend.ts
+  s_b00b2984d7b3c7::t_e9e5c80511f616 14-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "9716637f9148d18575543c1bc047ec6f3c1e4448",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
