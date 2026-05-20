@@ -140,8 +140,46 @@ curl http://localhost:3000/health
 ```
 
 ```json
-{ "status": "ok", "model": "large-v3", "device": "cuda", "queue_depth": 0 }
+{
+  "status": "ok",
+  "model": "large-v3",
+  "device": "cuda",
+  "queue_depth": 0,
+  "backend": {
+    "cli_available": true,
+    "cuda_available": true,
+    "model_present": true,
+    "model_path": "/app/models/large-v3"
+  }
+}
 ```
+
+`cuda_available` is `null` when `WHISPER_DEVICE=cpu` (check is skipped).
+
+## Backend check
+
+At startup, before the HTTP server binds, the service verifies three things:
+
+| Check | What it does |
+|---|---|
+| `cli_available` | Runs `faster-whisper --version` — confirms the CLI is on PATH |
+| `cuda_available` | Runs `nvidia-smi` — confirms GPU + CUDA driver (skipped for `cpu` device) |
+| `model_present` | Checks `$WHISPER_MODEL` directory exists under `/app/models` |
+
+If any check fails the process exits immediately with a structured error log — the HTTP server never starts. This prevents jobs from being silently queued against a broken backend.
+
+**Diagnosing a startup failure:**
+
+```
+{"level":50,"cliAvailable":false,"cudaAvailable":null,"modelPresent":true,
+ "modelPath":"/app/models/large-v3","msg":"Whisper backend check failed — aborting startup"}
+```
+
+Common causes:
+
+- `cli_available: false` — `faster-whisper` not installed in the image or not on PATH
+- `cuda_available: false` — NVIDIA driver not loaded; check `nvidia-smi` on the host and verify the NVIDIA Container Toolkit is configured
+- `model_present: false` — model weights not downloaded or the `whisper-models` volume is not mounted; download weights to the host volume before starting
 
 ## Development
 
@@ -149,11 +187,12 @@ Requires [Bun](https://bun.sh) >= 1.2.
 
 ```bash
 bun install
-bun dev          # start with hot reload
-bun test         # run tests
-bun check        # type check + code analysis
-bun db:generate  # generate a new migration from schema changes
-bun db:migrate   # apply pending migrations
+bun dev             # start with hot reload
+bun test            # run tests
+bun check           # type check + code analysis
+bun db:generate     # generate a new migration from schema changes
+bun db:migrate      # apply pending migrations
+bun check-backend   # verify faster-whisper CLI, CUDA, and model weights
 ```
 
 Git hooks are installed automatically via `lefthook` on `bun install`. They run Biome (lint + format) on staged files and `tsc` on each commit.
