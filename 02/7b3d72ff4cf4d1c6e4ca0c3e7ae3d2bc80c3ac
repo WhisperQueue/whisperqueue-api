@@ -1,0 +1,23 @@
+src/scripts/checkBackend.ts
+  s_b00b2984d7b3c7::t_714d5da78eb45f 1-43
+.fallowrc.json
+  s_b00b2984d7b3c7::t_56d3995555d368 3
+package.json
+  s_b00b2984d7b3c7::t_b59cde545647fb 47-48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "027b3d72ff4cf4d1c6e4ca0c3e7ae3d2bc80c3ac",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
