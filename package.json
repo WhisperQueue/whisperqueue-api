@@ -44,7 +44,8 @@
         "lint:fix": "biome check --fix .",
         "test": "bun test",
         "db:generate": "drizzle-kit generate --config src/db/drizzle.config.ts",
-        "db:migrate": "drizzle-kit migrate --config src/db/drizzle.config.ts"
+        "db:migrate": "drizzle-kit migrate --config src/db/drizzle.config.ts",
+        "check-backend": "bun src/scripts/checkBackend.ts"
     },
     "dependencies": {
         "bunqueue": "^2.7.14",
