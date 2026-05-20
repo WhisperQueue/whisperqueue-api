@@ -7,10 +7,11 @@ import { checkWhisperBackend } from '@/utils/checkWhisperBackend';
 
 type SpawnCodes = Record<string, number>;
 
-function setupMocks(codes: SpawnCodes, modelExists: boolean): () => void {
+function setupMocks(codes: SpawnCodes, modelExists: boolean, throws?: Set<string>): () => void {
     const originalSpawn = Bun.spawn;
     Bun.spawn = ((args: string[]) => {
         const cmd = args[0] as string;
+        if (throws?.has(cmd)) throw new Error(`ENOENT: ${cmd}`);
         return { exited: Promise.resolve(codes[cmd] ?? 0), stdout: null, stderr: null };
     }) as unknown as typeof Bun.spawn;
     mock.module('node:fs', () => ({ existsSync: () => modelExists }));
@@ -33,6 +34,14 @@ describe('checkWhisperBackend', () => {
 
         it('not ok when CLI fails', async () => {
             const restore = setupMocks({ 'faster-whisper': 1 }, true);
+            const result = await checkWhisperBackend();
+            expect(result.ok).toBe(false);
+            expect(result.cliAvailable).toBe(false);
+            restore();
+        });
+
+        it('not ok when CLI is not found (ENOENT)', async () => {
+            const restore = setupMocks({}, true, new Set(['faster-whisper']));
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(false);
             expect(result.cliAvailable).toBe(false);

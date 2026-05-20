@@ -11,8 +11,12 @@ export type BackendCheckResult = {
 };
 
 async function spawnExits0(cmd: string[]): Promise<boolean> {
-    const proc = Bun.spawn(cmd, { stdout: 'ignore', stderr: 'ignore' });
-    return (await proc.exited) === 0;
+    try {
+        const proc = Bun.spawn(cmd, { stdout: 'ignore', stderr: 'ignore' });
+        return (await proc.exited) === 0;
+    } catch {
+        return false;
+    }
 }
 
 async function checkCuda(isCuda: boolean): Promise<boolean | null> {
