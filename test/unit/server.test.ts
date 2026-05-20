@@ -15,7 +15,18 @@ mock.module('@/config', () => ({
 
 const deps: AppDeps = {
     logger: createMockLogger(),
-    health: { model: 'large-v3', device: 'cuda', getQueueDepth: () => 0 },
+    health: {
+        model: 'large-v3',
+        device: 'cuda',
+        getQueueDepth: () => 0,
+        backend: {
+            ok: true,
+            cliAvailable: true,
+            cudaAvailable: true,
+            modelPresent: true,
+            modelPath: '/app/models/large-v3',
+        },
+    },
 };
 
 let app: Hono;
