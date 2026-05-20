@@ -1,0 +1,30 @@
+src/utils/checkWhisperBackend.ts
+  s_b00b2984d7b3c7::t_d2b12fdce9d816 1-17,23-28,30-32,35-37
+  s_b00b2984d7b3c7::t_b3820671fa2f6e 18-22,29,33-34
+test/unit/utils/checkWhisperBackend.test.ts
+  s_b00b2984d7b3c7::t_1069835dd9130c 12,15
+  s_b00b2984d7b3c7::t_e7ef742040b13f 17-19
+  s_b00b2984d7b3c7::t_b203533ef11e52 1-7,13,21-24,26-34,36-42,44-55,57-64,66-74,76-80
+  s_b00b2984d7b3c7::t_afc16d70a8bca7 8-11,14,16,20,25,35,43,56,65,75
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "aff11223d1238d2d0a201472a05e1855137a0432",
+  "prompts": {},
+  "humans": {
+    "h_d2d80973a08152": {
+      "author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
