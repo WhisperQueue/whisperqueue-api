@@ -21,6 +21,8 @@ const startServer = async () => {
         process.exit(1);
     }
 
+    logger.info({ model: backend.modelPath, device: appConfig.whisper.device }, 'Whisper backend ready');
+
     const app = createHttpServer({
         logger,
         health: {
