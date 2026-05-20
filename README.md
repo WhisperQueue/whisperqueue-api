@@ -170,7 +170,7 @@ If any check fails the process exits immediately with a structured error log —
 
 **Diagnosing a startup failure:**
 
-```
+```json
 {"level":50,"cliAvailable":false,"cudaAvailable":null,"modelPresent":true,
  "modelPath":"/app/models/large-v3","msg":"Whisper backend check failed — aborting startup"}
 ```
