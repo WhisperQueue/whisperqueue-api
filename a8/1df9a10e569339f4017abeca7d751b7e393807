@@ -1,0 +1,21 @@
+src/routes/health.ts
+  s_b00b2984d7b3c7::t_74ec2e0c8ff535 2,8,18-23
+test/unit/routes/health.test.ts
+  s_b00b2984d7b3c7::t_82f7f370f27080 3,6-14,16-22,32,35-46,51-56,66-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "a81df9a10e569339f4017abeca7d751b7e393807",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
