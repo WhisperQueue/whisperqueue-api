@@ -1,0 +1,33 @@
+src/utils/checkWhisperBackend.ts
+  s_b00b2984d7b3c7::t_e9e5c80511f616 14-19
+README.md
+  s_b00b2984d7b3c7::t_8ed7e484dcedf2 143-154,157-182
+  s_b00b2984d7b3c7::t_1ec6b1a753c129 190-195
+src/index.ts
+  s_b00b2984d7b3c7::t_a2e087d1648931 24-25
+package.json
+  s_b00b2984d7b3c7::t_b59cde545647fb 47-48
+.fallowrc.json
+  s_b00b2984d7b3c7::t_56d3995555d368 3
+src/scripts/checkBackend.ts
+  s_b00b2984d7b3c7::t_714d5da78eb45f 1-43
+test/unit/utils/checkWhisperBackend.test.ts
+  s_b00b2984d7b3c7::t_4683980be9f690 43-50
+  s_b00b2984d7b3c7::t_a4df47e3d4d78b 10,14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "d6850d5bd88a134ed6591381d82b18874d1ca7d7",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
