@@ -1,18 +1,38 @@
-import { describe, expect, it } from 'bun:test';
-import { parseLanguageLine, parseSegmentLine, parseTimestamp, TranscriberService } from '@/services/transcriber';
+import { describe, expect, it, mock } from 'bun:test';
+import { TranscriberService } from '@/services/transcriber';
+import type { ResolvedWhisperCommand } from '@/utils/resolveWhisperCommand';
 
-export { TranscriberService };
+const defaultCommand: ResolvedWhisperCommand = {
+    command: 'python3',
+    baseArgs: ['/app/scripts/transcribe.py'],
+};
+
+function mockResolvedCommand(cmd: ResolvedWhisperCommand = defaultCommand): void {
+    mock.module('@/utils/resolveWhisperCommand', () => ({
+        getResolvedWhisperCommand: () => cmd,
+        resolveWhisperCommand: async () => cmd,
+        resetResolvedWhisperCommand: () => {},
+    }));
+}
+
+function stubService(overrides: Record<string, unknown> = {}): TranscriberService {
+    const service = new TranscriberService();
+    Object.assign(service, {
+        spawnWhisper: () => ({ exited: Promise.resolve(0) }),
+        getAudioDuration: () => Promise.resolve(10),
+        ...overrides,
+    });
+    return service;
+}
 
 describe('TranscriberService.transcribe', () => {
-    it('collects segments and detects language from output lines', async () => {
-        const service = new TranscriberService();
-
-        Object.assign(service, {
-            getAudioDuration: () => Promise.resolve(10),
-            spawnWhisper: () => ({ exited: Promise.resolve(0) }),
+    it('collects segments and detects language from JSON-lines output', async () => {
+        mockResolvedCommand();
+        const service = stubService({
             readLines: async function* () {
-                yield '[00:00.000 --> 00:02.560]  Hello world';
-                yield "Detected language 'fr' with probability 0.99";
+                yield JSON.stringify({ type: 'info', language: 'fr', language_probability: 0.99, duration: 10 });
+                yield JSON.stringify({ type: 'segment', start: 0, end: 2.56, text: 'Hello world' });
+                yield JSON.stringify({ type: 'done' });
             },
         });
 
@@ -26,15 +46,14 @@ describe('TranscriberService.transcribe', () => {
     });
 
     it('reports progress via onProgress callback', async () => {
-        const service = new TranscriberService();
+        mockResolvedCommand();
         const progressValues: number[] = [];
-
-        Object.assign(service, {
-            getAudioDuration: () => Promise.resolve(10),
-            spawnWhisper: () => ({ exited: Promise.resolve(0) }),
+        const service = stubService({
             readLines: async function* () {
-                yield '[00:00.000 --> 00:05.000]  First half';
-                yield '[00:05.000 --> 00:10.000]  Second half';
+                yield JSON.stringify({ type: 'info', language: 'en', language_probability: 0.95, duration: 10 });
+                yield JSON.stringify({ type: 'segment', start: 0, end: 5, text: 'First half' });
+                yield JSON.stringify({ type: 'segment', start: 5, end: 10, text: 'Second half' });
+                yield JSON.stringify({ type: 'done' });
             },
         });
 
@@ -42,60 +61,42 @@ describe('TranscriberService.transcribe', () => {
 
         expect(progressValues).toEqual([50, 100]);
     });
-});
 
-describe('parseTimestamp', () => {
-    it('parses MM:SS.mmm format', () => {
-        expect(parseTimestamp('00:02.560')).toBeCloseTo(2.56);
+    it('falls back to ffprobe duration when info line has no duration', async () => {
+        mockResolvedCommand();
+        const service = stubService({
+            readLines: async function* () {
+                yield JSON.stringify({ type: 'info', language: 'en', language_probability: 0.95, duration: 0 });
+                yield JSON.stringify({ type: 'segment', start: 0, end: 5, text: 'Hello' });
+                yield JSON.stringify({ type: 'done' });
+            },
+            getAudioDuration: () => Promise.resolve(20),
+        });
+
+        const result = await service.transcribe('/fake/audio.mp3');
+        expect(result.duration).toBe(20);
     });
 
-    it('parses MM:SS,mmm format (comma separator)', () => {
-        expect(parseTimestamp('01:30,000')).toBeCloseTo(90);
+    it('uses language fallback when info line missing', async () => {
+        mockResolvedCommand();
+        const service = stubService({
+            readLines: async function* () {
+                yield JSON.stringify({ type: 'segment', start: 0, end: 5, text: 'Hello' });
+            },
+        });
+
+        const result = await service.transcribe('/fake/audio.mp3', 'de');
+        expect(result.language).toBe('de');
     });
 
-    it('parses HH:MM:SS.mmm format', () => {
-        expect(parseTimestamp('01:00:00.000')).toBeCloseTo(3600);
-    });
+    it('throws on non-zero exit code', async () => {
+        mockResolvedCommand();
+        const service = stubService({
+            spawnWhisper: () => ({ exited: Promise.resolve(1) }),
+            readLines: async function* () {},
+        });
 
-    it('parses minutes correctly', () => {
-        expect(parseTimestamp('02:30.000')).toBeCloseTo(150);
-    });
-});
-
-describe('parseSegmentLine', () => {
-    it('parses a standard faster-whisper segment line', () => {
-        const result = parseSegmentLine('[00:00.000 --> 00:02.560]  Hello world');
-        expect(result).toEqual({ start: 0, end: 2.56, text: 'Hello world' });
-    });
-
-    it('trims leading/trailing whitespace from text', () => {
-        const result = parseSegmentLine('[00:00.000 --> 00:01.000]   trimmed   ');
-        expect(result?.text).toBe('trimmed');
-    });
-
-    it('returns null for non-segment lines', () => {
-        expect(parseSegmentLine("Detected language 'en' with probability 0.99")).toBeNull();
-        expect(parseSegmentLine('')).toBeNull();
-        expect(parseSegmentLine('Some random output')).toBeNull();
-    });
-
-    it('returns null for malformed timestamps', () => {
-        expect(parseSegmentLine('[bad --> worse]  text')).toBeNull();
-    });
-});
-
-describe('parseLanguageLine', () => {
-    it('extracts language code from detected language line', () => {
-        expect(parseLanguageLine("Detected language 'en' with probability 0.999")).toBe('en');
-    });
-
-    it('handles different language codes', () => {
-        expect(parseLanguageLine("Detected language 'fr' with probability 0.85")).toBe('fr');
-    });
-
-    it('returns null for non-language lines', () => {
-        expect(parseLanguageLine('[00:00.000 --> 00:02.000]  Hello')).toBeNull();
-        expect(parseLanguageLine('')).toBeNull();
+        await expect(service.transcribe('/fake/audio.mp3')).rejects.toThrow(/exited with code 1/);
     });
 });
 

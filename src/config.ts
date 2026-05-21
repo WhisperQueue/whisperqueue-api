@@ -28,6 +28,7 @@ const AppConfigSchema = z
         WHISPER_MODEL: z.string().default('large-v3'),
         WHISPER_DEVICE: z.string().default('cuda'),
         BEAM_SIZE: z.coerce.number().int().min(1).default(5),
+        WHISPER_COMMAND: z.string().default('auto'),
 
         // Download
         MAX_FILE_SIZE_MB: z.coerce.number().int().min(1).default(500),
@@ -61,6 +62,7 @@ const AppConfigSchema = z
             WHISPER_MODEL,
             WHISPER_DEVICE,
             BEAM_SIZE,
+            WHISPER_COMMAND,
             MAX_FILE_SIZE_MB,
             DOWNLOAD_TIMEOUT_SECONDS,
             S3_ENDPOINT_URL,
@@ -92,6 +94,7 @@ const AppConfigSchema = z
                 model: WHISPER_MODEL,
                 device: WHISPER_DEVICE,
                 beamSize: BEAM_SIZE,
+                command: WHISPER_COMMAND,
             },
             download: {
                 maxFileSizeMb: MAX_FILE_SIZE_MB,

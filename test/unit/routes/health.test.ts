@@ -9,6 +9,7 @@ const mockBackend = {
     cudaAvailable: true,
     modelPresent: true,
     modelPath: '/app/models/large-v3',
+    command: { command: 'python3', baseArgs: ['/app/scripts/transcribe.py'] },
 };
 
 const makeApp = (queueDepth = 0, overrides: Partial<HealthDeps> = {}) => {
@@ -42,6 +43,7 @@ describe('GET /health', () => {
                 cuda_available: true,
                 model_present: true,
                 model_path: '/app/models/large-v3',
+                command: { command: 'python3', baseArgs: ['/app/scripts/transcribe.py'] },
             },
         });
     });

@@ -25,6 +25,7 @@ const deps: AppDeps = {
             cudaAvailable: true,
             modelPresent: true,
             modelPath: '/app/models/large-v3',
+            command: { command: 'python3', baseArgs: ['/app/scripts/transcribe.py'] },
         },
     },
 };

@@ -4,10 +4,12 @@ import { mockAppConfig } from '../../helpers/mockConfig';
 mock.module('@/config', () => ({ appConfig: mockAppConfig }));
 
 import { checkWhisperBackend } from '@/utils/checkWhisperBackend';
+import { resetResolvedWhisperCommand } from '@/utils/resolveWhisperCommand';
 
-type SpawnCodes = Record<string, number>;
+type SpawnResults = Record<string, number>;
+type SpawnThrows = Set<string>;
 
-function setupMocks(codes: SpawnCodes, modelExists: boolean, throws?: Set<string>): () => void {
+function setupMocks(codes: SpawnResults, modelExists: boolean, throws?: SpawnThrows): () => void {
     const originalSpawn = Bun.spawn;
     Bun.spawn = ((args: string[]) => {
         const cmd = args[0] as string;
@@ -22,34 +24,40 @@ function setupMocks(codes: SpawnCodes, modelExists: boolean, throws?: Set<string
 
 describe('checkWhisperBackend', () => {
     describe('device = cpu (mockAppConfig default)', () => {
-        it('ok when CLI passes and model dir exists', async () => {
-            const restore = setupMocks({ 'faster-whisper': 0 }, true);
+        it('ok when command passes and model dir exists', async () => {
+            resetResolvedWhisperCommand();
+            const restore = setupMocks({ python3: 0 }, true);
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(true);
             expect(result.cliAvailable).toBe(true);
             expect(result.cudaAvailable).toBeNull();
             expect(result.modelPresent).toBe(true);
+            expect(result.command.command).toBe('python3');
             restore();
         });
 
-        it('not ok when CLI fails', async () => {
-            const restore = setupMocks({ 'faster-whisper': 1 }, true);
+        it('not ok when command fails', async () => {
+            resetResolvedWhisperCommand();
+            const restore = setupMocks({ python3: 1, 'faster-whisper-xxl': 1 }, true);
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(false);
             expect(result.cliAvailable).toBe(false);
             restore();
         });
 
-        it('not ok when CLI is not found (ENOENT)', async () => {
-            const restore = setupMocks({}, true, new Set(['faster-whisper']));
+        it('not ok when command is not found (ENOENT)', async () => {
+            resetResolvedWhisperCommand();
+            const restore = setupMocks({}, true, new Set(['python3', 'faster-whisper-xxl']));
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(false);
             expect(result.cliAvailable).toBe(false);
+            expect(result.command.command).toBe('');
             restore();
         });
 
         it('not ok when model dir is absent', async () => {
-            const restore = setupMocks({ 'faster-whisper': 0 }, false);
+            resetResolvedWhisperCommand();
+            const restore = setupMocks({ python3: 0 }, false);
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(false);
             expect(result.modelPresent).toBe(false);
@@ -58,11 +66,12 @@ describe('checkWhisperBackend', () => {
     });
 
     describe('device = cuda', () => {
-        const cudaConfig = { ...mockAppConfig, whisper: { ...mockAppConfig.whisper, device: 'cuda' } };
-
-        it('ok when CLI, nvidia-smi, and model all pass', async () => {
-            mock.module('@/config', () => ({ appConfig: cudaConfig }));
-            const restore = setupMocks({ 'faster-whisper': 0, 'nvidia-smi': 0 }, true);
+        it('ok when command, nvidia-smi, and model all pass', async () => {
+            resetResolvedWhisperCommand();
+            mock.module('@/config', () => ({
+                appConfig: { ...mockAppConfig, whisper: { ...mockAppConfig.whisper, device: 'cuda' } },
+            }));
+            const restore = setupMocks({ python3: 0, 'nvidia-smi': 0 }, true);
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(true);
             expect(result.cudaAvailable).toBe(true);
@@ -70,8 +79,11 @@ describe('checkWhisperBackend', () => {
         });
 
         it('not ok when nvidia-smi fails', async () => {
-            mock.module('@/config', () => ({ appConfig: cudaConfig }));
-            const restore = setupMocks({ 'faster-whisper': 0, 'nvidia-smi': 1 }, true);
+            resetResolvedWhisperCommand();
+            mock.module('@/config', () => ({
+                appConfig: { ...mockAppConfig, whisper: { ...mockAppConfig.whisper, device: 'cuda' } },
+            }));
+            const restore = setupMocks({ python3: 0, 'nvidia-smi': 1 }, true);
             const result = await checkWhisperBackend();
             expect(result.ok).toBe(false);
             expect(result.cudaAvailable).toBe(false);
@@ -80,8 +92,9 @@ describe('checkWhisperBackend', () => {
     });
 
     it('modelPath is constructed from /app/models + model name', async () => {
+        resetResolvedWhisperCommand();
         mock.module('@/config', () => ({ appConfig: mockAppConfig }));
-        const restore = setupMocks({ 'faster-whisper': 0 }, true);
+        const restore = setupMocks({ python3: 0 }, true);
         const result = await checkWhisperBackend();
         expect(result.modelPath).toBe(`/app/models/${mockAppConfig.whisper.model}`);
         restore();

@@ -6,7 +6,7 @@ export const mockAppConfig: AppConfig = {
     security: { headers: false },
     database: { path: ':memory:' },
     logger: { level: 'silent', pretty: false },
-    whisper: { model: 'tiny', device: 'cpu', beamSize: 1 },
+    whisper: { model: 'tiny', device: 'cpu', beamSize: 1, command: 'auto' },
     download: { maxFileSizeMb: 10, timeoutSeconds: 5 },
     s3: {
         endpointUrl: undefined,

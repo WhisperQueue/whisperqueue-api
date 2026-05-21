@@ -48,6 +48,7 @@ Copy `.env.example` to `.env`. All env vars are parsed and validated at startup 
 | `WHISPER_MODEL` | | `large-v3` | faster-whisper model: `tiny`, `base`, `small`, `medium`, `large-v3` |
 | `WHISPER_DEVICE` | | `cuda` | Inference device: `cuda` or `cpu` |
 | `BEAM_SIZE` | | `5` | Beam search width — higher is more accurate but slower |
+| `WHISPER_COMMAND` | | `auto` | How to invoke Whisper: `auto` (detect), or explicit path like `python3 /app/scripts/transcribe.py` |
 | `MAX_FILE_SIZE_MB` | | `500` | Maximum audio file size accepted for download |
 | `DOWNLOAD_TIMEOUT_SECONDS` | | `120` | Timeout for downloading audio files |
 | `S3_ENDPOINT_URL` | | — | S3-compatible endpoint (e.g. `http://minio:9000`). Leave blank for AWS |
@@ -76,6 +77,7 @@ appConfig.logger.pretty        // LOGGER_PRETTY_PRINT    (coerced to boolean)
 appConfig.whisper.model        // WHISPER_MODEL
 appConfig.whisper.device       // WHISPER_DEVICE
 appConfig.whisper.beamSize     // BEAM_SIZE              (coerced to number)
+appConfig.whisper.command      // WHISPER_COMMAND
 
 appConfig.download.maxFileSizeMb     // MAX_FILE_SIZE_MB        (coerced to number)
 appConfig.download.timeoutSeconds    // DOWNLOAD_TIMEOUT_SECONDS (coerced to number)
@@ -149,7 +151,8 @@ curl http://localhost:3000/health
     "cli_available": true,
     "cuda_available": true,
     "model_present": true,
-    "model_path": "/app/models/large-v3"
+    "model_path": "/app/models/large-v3",
+    "command": { "command": "python3", "baseArgs": ["/app/scripts/transcribe.py"] }
   }
 }
 ```
@@ -162,9 +165,11 @@ At startup, before the HTTP server binds, the service verifies three things:
 
 | Check | What it does |
 |---|---|
-| `cli_available` | Runs `faster-whisper --version` — confirms the CLI is on PATH |
+| `cli_available` | Runs the resolved Whisper command with `--check` — confirms Python + faster_whisper + model dir |
 | `cuda_available` | Runs `nvidia-smi` — confirms GPU + CUDA driver (skipped for `cpu` device) |
 | `model_present` | Checks `$WHISPER_MODEL` directory exists under `/app/models` |
+
+`WHISPER_COMMAND=auto` (default) tries `python3 /app/scripts/transcribe.py --check`, then `faster-whisper-xxl --check`. Set it explicitly to skip auto-detection.
 
 If any check fails the process exits immediately with a structured error log — the HTTP server never starts. This prevents jobs from being silently queued against a broken backend.
 
@@ -172,18 +177,29 @@ If any check fails the process exits immediately with a structured error log —
 
 ```json
 {"level":50,"cliAvailable":false,"cudaAvailable":null,"modelPresent":true,
- "modelPath":"/app/models/large-v3","msg":"Whisper backend check failed — aborting startup"}
+ "command":{"command":"","baseArgs":[]},
+ "msg":"Whisper backend check failed — aborting startup"}
 ```
 
 Common causes:
 
-- `cli_available: false` — `faster-whisper` not installed in the image or not on PATH
+- `cli_available: false` — Whisper command not found; set `WHISPER_COMMAND` explicitly or verify the installation
 - `cuda_available: false` — NVIDIA driver not loaded; check `nvidia-smi` on the host and verify the NVIDIA Container Toolkit is configured
 - `model_present: false` — model weights not downloaded or the `whisper-models` volume is not mounted; download weights to the host volume before starting
 
 ## Development
 
 Requires [Bun](https://bun.sh) >= 1.2.
+
+For local development with GPU + Python + faster-whisper, use the [whisperqueue-docker](https://github.com/WhisperQueue/whisperqueue-docker) image. Set `WHISPER_COMMAND` in `.env` to match your setup:
+
+```bash
+# Docker (default)
+WHISPER_COMMAND=auto
+
+# Local venv
+WHISPER_COMMAND=python3 /path/to/venv/bin/transcribe.py
+```
 
 ```bash
 bun install
@@ -192,7 +208,7 @@ bun test            # run tests
 bun check           # type check + code analysis
 bun db:generate     # generate a new migration from schema changes
 bun db:migrate      # apply pending migrations
-bun check-backend   # verify faster-whisper CLI, CUDA, and model weights
+bun check-backend   # verify Whisper command, CUDA, and model weights
 ```
 
 Git hooks are installed automatically via `lefthook` on `bun install`. They run Biome (lint + format) on staged files and `tsc` on each commit.

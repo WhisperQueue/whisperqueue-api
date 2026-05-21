@@ -15,6 +15,7 @@ const startServer = async () => {
                 cudaAvailable: backend.cudaAvailable,
                 modelPresent: backend.modelPresent,
                 modelPath: backend.modelPath,
+                command: backend.command,
             },
             'Whisper backend check failed — aborting startup'
         );

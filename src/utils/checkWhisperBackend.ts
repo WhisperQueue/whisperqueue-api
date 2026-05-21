@@ -1,6 +1,7 @@
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { appConfig } from '@/config';
+import { type ResolvedWhisperCommand, resolveWhisperCommand } from '@/utils/resolveWhisperCommand';
 
 export type BackendCheckResult = {
     ok: boolean;
@@ -8,6 +9,7 @@ export type BackendCheckResult = {
     cudaAvailable: boolean | null;
     modelPresent: boolean;
     modelPath: string;
+    command: ResolvedWhisperCommand;
 };
 
 async function spawnExits0(cmd: string[]): Promise<boolean> {
@@ -24,12 +26,23 @@ async function checkCuda(isCuda: boolean): Promise<boolean | null> {
     return spawnExits0(['nvidia-smi']);
 }
 
+// fallow-ignore-next-line complexity
 export async function checkWhisperBackend(): Promise<BackendCheckResult> {
     const modelPath = join('/app/models', appConfig.whisper.model);
     const isCuda = appConfig.whisper.device === 'cuda';
 
-    const [cliAvailable, cudaAvailable, modelPresent] = await Promise.all([
-        spawnExits0(['faster-whisper', '--version']),
+    let command: ResolvedWhisperCommand;
+    let cliAvailable: boolean;
+
+    try {
+        command = await resolveWhisperCommand();
+        cliAvailable = true;
+    } catch {
+        command = { command: '', baseArgs: [] };
+        cliAvailable = false;
+    }
+
+    const [cudaAvailable, modelPresent] = await Promise.all([
         checkCuda(isCuda),
         Promise.resolve(existsSync(modelPath)),
     ]);
@@ -37,5 +50,5 @@ export async function checkWhisperBackend(): Promise<BackendCheckResult> {
     const cudaOk = !isCuda || cudaAvailable === true;
     const ok = cliAvailable && modelPresent && cudaOk;
 
-    return { ok, cliAvailable, cudaAvailable, modelPresent, modelPath };
+    return { ok, cliAvailable, cudaAvailable, modelPresent, modelPath, command };
 }
