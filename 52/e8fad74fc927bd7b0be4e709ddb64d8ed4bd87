@@ -1,0 +1,72 @@
+test/unit/server.test.ts
+  s_b00b2984d7b3c7::t_ea718ea6dce8ad 28
+scripts/transcribe.py
+  s_b00b2984d7b3c7::t_343eb5b2a45805 1-109
+test/unit/utils/resolveWhisperCommand.test.ts
+  s_b00b2984d7b3c7::t_b760418317b681 11,75
+  s_b00b2984d7b3c7::t_8df421312fadef 12
+  s_b00b2984d7b3c7::t_c38ffb539fad2b 1-2,4-10,13-74,76-85
+  ai_agent 3,86
+test/unit/routes/health.test.ts
+  s_b00b2984d7b3c7::t_e5d3c9e71b71b1 46
+  s_b00b2984d7b3c7::t_5df8d0707c9e2d 12
+src/services/transcriber.ts
+  s_b00b2984d7b3c7::t_845654930052dd 2,17-22,24-29,31-33,35-40,62-64,66-69,80-90,93-94,120-140
+  s_b00b2984d7b3c7::t_8f9bda1a214bb9 56
+  ai_agent 70-79
+  s_b00b2984d7b3c7::t_e62d44b0b0423e 99
+  s_b00b2984d7b3c7::t_a2db2117fb5877 100-101,103-104,106-116,118
+README.md
+  s_b00b2984d7b3c7::t_3908584d4a9861 51
+  s_b00b2984d7b3c7::t_21b37cf08989bc 194-203,211
+  s_b00b2984d7b3c7::t_e5269a3c908090 154-155
+  s_b00b2984d7b3c7::t_224a3b4a16cc25 80
+  s_b00b2984d7b3c7::t_1b90564528341e 168,172-173,180-181,186
+src/index.ts
+  s_b00b2984d7b3c7::t_b78a5a390ae420 18
+src/scripts/checkBackend.ts
+  s_b00b2984d7b3c7::t_07c48f71bbe2e1 38
+  ai_agent 18-22
+src/routes/health.ts
+  s_b00b2984d7b3c7::t_0bcc25298904d1 23
+test/helpers/mockConfig.ts
+  s_b00b2984d7b3c7::t_8c35d2b257f85c 9
+src/config.ts
+  s_b00b2984d7b3c7::t_c568af6b20fe6b 65
+  s_b00b2984d7b3c7::t_a24b6f8d6d1ab6 97
+  s_b00b2984d7b3c7::t_dc0c7a56777a06 31
+src/utils/resolveWhisperCommand.ts
+  ai_agent 44,70
+  s_b00b2984d7b3c7::t_86f3c91fc0c9ec 17-19
+  s_b00b2984d7b3c7::t_4aad502e834c55 1-16,20-33,35-43,45-69
+  s_b00b2984d7b3c7::t_235e7f40a50c71 34
+test/unit/services/transcriber.test.ts
+  s_b00b2984d7b3c7::t_e2752ffa2da84c 1,10-17,30,49,66,81,93
+  s_b00b2984d7b3c7::t_2ac146c9828928 18-26
+  s_b00b2984d7b3c7::t_656d43d689fb59 31,51,67,82,94
+  s_b00b2984d7b3c7::t_995ca7eedd0ba2 2-8,29,33-35,53-56,65,68-74,76-77,80,83-86,88-89,92,95-97,99
+test/unit/utils/checkWhisperBackend.test.ts
+  s_b00b2984d7b3c7::t_2a931cb491c83b 7,9-10,12,27-29,35,39-40,48-50,54,59-60,69-74,82-86,95,97
+  s_b00b2984d7b3c7::t_42ca82b4f36548 41
+.env.example
+  s_b00b2984d7b3c7::t_b879079e7f51f7 23
+src/utils/checkWhisperBackend.ts
+  s_b00b2984d7b3c7::t_9a16f96aa7ff4d 4,12,34-45,53
+  s_b00b2984d7b3c7::t_999b73435446ec 29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.11",
+  "base_commit_sha": "52e8fad74fc927bd7b0be4e709ddb64d8ed4bd87",
+  "prompts": {},
+  "sessions": {
+    "s_b00b2984d7b3c7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7b83633c-ed29-48f3-b106-d79c32544ba9",
+        "model": "glm-5.1"
+      },
+      "human_author": "Angel S. Moreno <angelxmoreno@gmail.com>"
+    }
+  }
+}
