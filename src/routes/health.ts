@@ -20,6 +20,7 @@ export const registerHealthRoute = (app: Hono, deps: HealthDeps): void => {
                 cuda_available: deps.backend.cudaAvailable,
                 model_present: deps.backend.modelPresent,
                 model_path: deps.backend.modelPath,
+                command: deps.backend.command,
             },
         })
     );

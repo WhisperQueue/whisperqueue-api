@@ -15,7 +15,11 @@ const result = await checkWhisperBackend();
 console.log('\nWhisper Backend Check');
 console.log(LINE);
 
-row(result.cliAvailable ? TICK : CROSS, 'CLI available', 'faster-whisper --version');
+row(
+    result.cliAvailable ? TICK : CROSS,
+    'Whisper command',
+    [result.command.command, ...result.command.baseArgs].join(' ')
+);
 
 if (result.cudaAvailable === null) {
     row(SKIP, 'CUDA check skipped', `device is ${appConfig.whisper.device}`);
@@ -31,7 +35,7 @@ if (result.ok) {
     process.exit(0);
 } else {
     const reasons = [
-        !result.cliAvailable && 'faster-whisper CLI not found',
+        !result.cliAvailable && 'Whisper command not found — set WHISPER_COMMAND explicitly',
         result.cudaAvailable === false && 'nvidia-smi failed — check GPU driver',
         !result.modelPresent && `model weights not found at ${result.modelPath}`,
     ].filter(Boolean);
