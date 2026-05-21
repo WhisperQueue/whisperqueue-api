@@ -96,7 +96,7 @@ describe('TranscriberService.transcribe', () => {
             readLines: async function* () {},
         });
 
-        expect(service.transcribe('/fake/audio.mp3')).rejects.toThrow(/exited with code 1/);
+        await expect(service.transcribe('/fake/audio.mp3')).rejects.toThrow(/exited with code 1/);
     });
 });
 
